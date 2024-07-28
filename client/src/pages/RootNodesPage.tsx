@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { BaseNode } from './types';
+import { BaseNode } from '../types';
 import { Link } from 'react-router-dom';
+import queryKeys from '../api/queryKeys';
+import apiRoutes from '../api/routes';
 
-function App() {
+export default function RootNodesPage() {
 	const { data: nodes } = useQuery<BaseNode[]>({
-		queryKey: ['nodes'],
+		queryKey: queryKeys.rootNodes,
 		queryFn: async () => {
-			const res = await axios.get('/api/nodes');
+			const res = await axios.get(apiRoutes.nodes);
 			return res.data;
 		},
 	});
@@ -20,7 +22,7 @@ function App() {
 		<>
 			{nodes.map(node => (
 				<div key={node.nodeId}>
-					<h3>{node.nodeName}</h3>
+					<Link to={`/nodes/${node.nodeId}`}>{node.nodeName}</Link>
 					<ul>
 						{node.relations.map(relation => (
 							<li key={relation.relationId}>
@@ -35,5 +37,3 @@ function App() {
 		</>
 	);
 }
-
-export default App;
