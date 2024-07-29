@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import SingleNodePage from '../pages/SingleNodePage';
-import Layout from '../Layout';
+import Layout from '../components/TheLayout/Layout';
 import RootNodesPage from '../pages/RootNodesPage';
 import { clientRoutes } from '../api/routes';
 
