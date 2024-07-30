@@ -4,6 +4,7 @@ import { BaseNode } from '../types';
 import { Link } from 'react-router-dom';
 import queryKeys from '../api/queryKeys';
 import apiRoutes from '../api/routes';
+import GraphLayout from '../components/GraphLayout/GraphLayout';
 
 export default function RootNodesPage() {
 	const { data: nodes } = useQuery<BaseNode[]>({
@@ -20,6 +21,7 @@ export default function RootNodesPage() {
 
 	return (
 		<>
+			<GraphLayout />
 			{nodes.map(node => (
 				<div key={node.nodeId}>
 					<Link to={`/nodes/${node.nodeId}`}>{node.nodeName}</Link>

@@ -24,11 +24,15 @@ bun run dev
 
 - open `http://localhost:5173/`
 
+### Details
+It seems that force graph is the appropriate layout
+
 ### Tech
 
 - Vite
 - React Query (axios) - too lazy not to use axios
 - React Router - too lazy to learn anything more meaningful
+- react-force-graph-2d - evaluating
 
 ## Server
 
