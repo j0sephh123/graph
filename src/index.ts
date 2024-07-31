@@ -43,7 +43,7 @@ app.post('/api/nodes', async c => {
 	const neo4jService = Neo4jService.getInstance();
 	const { nodeName, existingNodeId } = await c.req.json();
 	try {
-		if (existingNodeId) {
+		if (typeof existingNodeId === 'number') {
 			const data = await neo4jService.addNodeWithRelation(
 				nodeName,
 				existingNodeId

@@ -32,7 +32,8 @@ It seems that force graph is the appropriate layout
 - Vite
 - React Query (axios) - too lazy not to use axios
 - React Router - too lazy to learn anything more meaningful
-- react-force-graph-2d - evaluating
+- react-force-graph-2d
+- jotai - to evaluate
 
 ## Server
 

@@ -13,3 +13,8 @@ export type Relation = {
 	relationId: number;
 	relationName: string;
 };
+
+export type GraphNode = {
+	id: number;
+	name: string;
+};
