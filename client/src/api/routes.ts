@@ -1,5 +1,6 @@
 export const apiRoutes = {
 	nodes: '/api/nodes',
+	graph: '/api/nodes/graph',
 	singleNode: (nodeId: number) => `/api/nodes/${nodeId}`,
 	relations: (node1Id: number, node2Id: number) =>
 		`/api/nodes/relations/${node1Id}/${node2Id}`,

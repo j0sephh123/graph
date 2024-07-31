@@ -21,6 +21,55 @@ class Neo4jService {
 		return Neo4jService.instance;
 	}
 
+	public async getGraphData() {
+		try {
+			// Open a transaction
+			const transaction = this.session.beginTransaction();
+
+			try {
+				const result = await transaction.run(`
+					MATCH (n)
+					OPTIONAL MATCH (n)-[r:RELATED_TO]->(m)
+					RETURN id(n) AS nodeId, n.name AS nodeName, collect({source: id(n), target: id(m)}) AS links
+				`);
+
+				const nodes: any[] = [];
+				const links = new Set();
+
+				result.records.forEach(record => {
+					const nodeId = record.get('nodeId').toInt();
+					const nodeName = record.get('nodeName');
+					nodes.push({ id: nodeId.toString(), name: nodeName });
+
+					record.get('links').forEach((link: any) => {
+						if (link.target !== null) {
+							links.add({
+								source: link.source.toString(),
+								target: link.target.toString(),
+							});
+						}
+					});
+				});
+
+				// Commit the transaction
+				await transaction.commit();
+
+				return {
+					nodes,
+					links: Array.from(links),
+				};
+			} catch (error) {
+				// Rollback the transaction in case of error
+				await transaction.rollback();
+				console.error('Error retrieving graph data:', error);
+				throw error;
+			}
+		} catch (error) {
+			console.error('Transaction error:', error);
+			throw error;
+		}
+	}
+
 	public async getAllNodesWithRelations() {
 		try {
 			const result = await this.session.run(`

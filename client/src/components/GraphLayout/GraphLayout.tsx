@@ -1,35 +1,66 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import ForceGraph2D from 'react-force-graph-2d';
+import queryKeys from '../../api/queryKeys';
+import apiRoutes from '../../api/routes';
 
 export default function GraphLayout() {
-	const [graphData, setGraphData] = useState<{
+	const { data: graphData } = useQuery<{
 		nodes: { id: string; name: string }[];
 		links: { source: string; target: string }[];
-	}>({ nodes: [], links: [] });
+	}>({
+		queryKey: queryKeys.graphData,
+		queryFn: async () => {
+			const response = await axios.get(apiRoutes.graph);
 
-	useEffect(() => {
-		// Fetch data from Neo4j and transform it
-		const fetchData = async () => {
-			setGraphData({
-				nodes: [
-					{ id: '1', name: 'Node 1' },
-					{ id: '2', name: 'Node 2' },
-					{ id: '3', name: 'Node 3' },
-					{ id: '4', name: 'Node 4' },
-					{ id: '5', name: 'Node 5' },
-				],
-				links: [
-					{ source: '1', target: '2' },
-					{ source: '1', target: '3' },
-					{ source: '2', target: '4' },
-					{ source: '3', target: '4' },
-					{ source: '4', target: '5' },
-				],
-			});
-		};
+			return response.data;
+		},
+	});
 
-		fetchData();
-	}, []);
+	const renderCustomNode = (node, ctx, globalScale) => {
+    const { id, name } = node;
 
-	return <ForceGraph2D backgroundColor='#363636' width={815} height={690} graphData={graphData} />;
+    // Draw default circle node
+    const radius = 5;
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'rgba(31, 120, 180, 0.92)';
+    ctx.fill();
+
+    // Draw text
+    const fontSize = 12 / globalScale;
+    ctx.font = `${fontSize}px Sans-Serif`;
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(name, node.x, node.y + radius + fontSize); 
+  };
+
+	return (
+		<ForceGraph2D
+			onNodeClick={node => {
+				console.log(node);
+			}}
+			onNodeRightClick={node => {
+				// do we have some context menu or?
+				console.log(node);
+			}}
+			onNodeHover={node => {
+				console.log('hover', node);
+			}}
+			onNodeDrag={node => {
+				console.log('drag', node);
+			}}
+			onNodeDragEnd={node => {
+				// maybe zoom on drag?
+				console.log('drag end', node);
+			}}
+			nodeCanvasObject={renderCustomNode}
+			linkWidth={4}
+			backgroundColor="#363636"
+			width={815}
+			height={690}
+			graphData={graphData}
+		/>
+	);
 }

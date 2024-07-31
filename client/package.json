@@ -17,6 +17,8 @@
     "@tanstack/react-query": "^5.51.15",
     "@tanstack/react-query-devtools": "^5.51.15",
     "axios": "^1.7.2",
+    "clsx": "^2.1.1",
+    "mantine-contextmenu": "^7.11.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-force-graph-2d": "^1.25.5",

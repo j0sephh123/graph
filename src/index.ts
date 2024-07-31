@@ -3,6 +3,16 @@ import Neo4jService from './Neo4jService';
 
 const app = new Hono();
 
+app.get('/api/nodes/graph', async c => {
+	const neo4jService = Neo4jService.getInstance();
+	try {
+		const data = await neo4jService.getGraphData();
+		return c.json(data);
+	} catch (error) {
+		return c.text('Error fetching data from Neo4j', 500);
+	}
+});
+
 app.get('/api/nodes', async c => {
 	const neo4jService = Neo4jService.getInstance();
 	try {
