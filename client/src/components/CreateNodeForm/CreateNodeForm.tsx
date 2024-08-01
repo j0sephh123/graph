@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { modals } from '@mantine/modals';
 import queryKeys from '../../api/queryKeys';
-import { ActionIcon, rem, TextInput, Text } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { Text } from '@mantine/core';
 import axios from 'axios';
 import apiRoutes from '../../api/routes';
 import { useNavigate } from 'react-router-dom';
+import InputWithIconButton from '../InputWithButton/InputWithIconButton';
+import useRefetchQueries from '../../api/useRefetchQueries';
 
 type NewNodeMutationVariables = {
 	existingNodeId?: number;
@@ -17,7 +18,7 @@ type NewNodeMutationVariables = {
 export default function CreateNodeForm() {
 	const navigate = useNavigate();
 	const [newNodeInputValue, setNewNodeInputValue] = useState('');
-	const queryClient = useQueryClient();
+	const refetchQueries = useRefetchQueries();
 
 	const openModal = (existingNodeId: string) =>
 		modals.openConfirmModal({
@@ -59,9 +60,8 @@ export default function CreateNodeForm() {
 			}
 
 			setNewNodeInputValue('');
-			queryClient.refetchQueries({
-				queryKey: queryKeys.rootNodes,
-			});
+
+			refetchQueries([queryKeys.rootNodes, queryKeys.graphData]);
 		},
 	});
 
@@ -73,24 +73,11 @@ export default function CreateNodeForm() {
 
 	return (
 		<div>
-			<TextInput
+			<InputWithIconButton
 				value={newNodeInputValue}
-				onChange={event => setNewNodeInputValue(event.currentTarget.value)}
-				rightSection={
-					<ActionIcon
-						disabled={newNodeInputValue === ''}
-						onClick={handleCreateNewNode}
-						size={32}
-						radius="xl"
-						variant="filled"
-					>
-						<IconPlus
-							style={{ width: rem(18), height: rem(18) }}
-							stroke={1.5}
-						/>
-					</ActionIcon>
-				}
-				placeholder="New node"
+				setValue={setNewNodeInputValue}
+				disabled={newNodeInputValue === ''}
+				onClick={handleCreateNewNode}
 			/>
 		</div>
 	);

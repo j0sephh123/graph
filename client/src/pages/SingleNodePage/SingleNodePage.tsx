@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { SingleNodeI } from '../types';
+import { SingleNodeI } from '../../types';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useRef } from 'react';
-import queryKeys from '../api/queryKeys';
-import useDeleteNode from '../api/useDeleteNode';
-import { clientRoutes } from '../api/routes';
-import useCreateRelatedNode from '../api/useCreateRelatedNode';
-import useDeleteRelation from '../api/useDeleteRelation';
-import useAddRelation from '../api/useAddRelation';
+import queryKeys from '../../api/queryKeys';
+import useDeleteNode from '../../api/useDeleteNode';
+import { clientRoutes } from '../../api/routes';
+import useCreateRelatedNode from '../../api/useCreateRelatedNode';
+import useDeleteRelation from '../../api/useDeleteRelation';
+import useAddRelation from '../../api/useAddRelation';
 
 export default function SingleNodePage() {
 	const navigate = useNavigate();

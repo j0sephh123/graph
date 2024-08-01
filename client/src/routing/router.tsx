@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import SingleNodePage from '../pages/SingleNodePage';
+import SingleNodePage from '../pages/SingleNodePage/SingleNodePage';
 import TheLayout from '../components/TheLayout/TheLayout';
-import RootNodesPage from '../pages/RootNodesPage';
+import RootNodesPage from '../pages/RootNodesPage/RootNodesPage';
 import { clientRoutes } from '../api/routes';
 
 const router = createBrowserRouter([

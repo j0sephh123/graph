@@ -43,13 +43,7 @@ app.post('/api/nodes', async c => {
 	const neo4jService = Neo4jService.getInstance();
 	const { nodeName, existingNodeId } = await c.req.json();
 	try {
-		if (typeof existingNodeId === 'number') {
-			const data = await neo4jService.addNodeWithRelation(
-				nodeName,
-				existingNodeId
-			);
-			return c.json(data);
-		} else {
+		if (existingNodeId === undefined) {
 			const { exists, existingNodeId } = await neo4jService.nodeExists(
 				nodeName
 			);
@@ -60,6 +54,14 @@ app.post('/api/nodes', async c => {
 			const data = await neo4jService.createNode(nodeName);
 			return c.json(data);
 		}
+
+		console.log({ nodeName, existingNodeId });
+
+		const data = await neo4jService.addNodeWithRelation(
+			nodeName,
+			+existingNodeId
+		);
+		return c.json(data);
 	} catch (error) {
 		return c.text('Error creating node in Neo4j', 500);
 	}
